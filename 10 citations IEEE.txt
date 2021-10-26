@@ -1,0 +1,49 @@
+K. Christidis and M. Devetsikiotis, "Blockchains and Smart Contracts for the Internet of Things," in IEEE Access, vol. 4, pp. 2292-2303, 2016.
+doi: 10.1109/ACCESS.2016.2566339
+keywords: {Distributed processing;Internet of things;Cryptography;Privacy;Blockchains;Automation;Peer-to-peer computing;blockchain;distributed systems;Internet of Things;Blockchain;distributed systems;internet of things},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7467408&isnumber=7419931
+
+B. Shahriari, K. Swersky, Z. Wang, R. P. Adams and N. de Freitas, "Taking the Human Out of the Loop: A Review of Bayesian Optimization," in Proceedings of the IEEE, vol. 104, no. 1, pp. 148-175, Jan. 2016.
+doi: 10.1109/JPROC.2015.2494218
+keywords: {Big data;Bayes methods;Linear programming;Decision making;Design of experiments;Optimization;Genomes;Statistical analysis;decision making;design of experiments;optimization;response surface methodology;statistical learning;genomic medicine;Decision making;design of experiments;optimization;response surface methodology;statistical learning},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7352306&isnumber=7360840
+
+A. L. Buczak and E. Guven, "A Survey of Data Mining and Machine Learning Methods for Cyber Security Intrusion Detection," in IEEE Communications Surveys & Tutorials, vol. 18, no. 2, pp. 1153-1176, Secondquarter 2016.
+doi: 10.1109/COMST.2015.2494502
+keywords: {IP networks;Protocols;Measurement;Ports (Computers);Data models;Data mining;Computer security;Cyber Analytics;Data Mining;Machine Learning;Cyber analytics;data mining;machine learning},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7307098&isnumber=7475979
+
+A. Lex, N. Gehlenborg, H. Strobelt, R. Vuillemot and H. Pfister, "UpSet: Visualization of Intersecting Sets," in IEEE Transactions on Visualization and Computer Graphics, vol. 20, no. 12, pp. 1983-1992, 31 Dec. 2014.
+doi: 10.1109/TVCG.2014.2346248
+keywords: {Data visualization;Visualization;Power generation;Sorting;Information analysis;Sets;set visualization;sets intersections;set attributes;set relationships;multidimensional data},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6876017&isnumber=6935054
+
+D. Ravì et al., "Deep Learning for Health Informatics," in IEEE Journal of Biomedical and Health Informatics, vol. 21, no. 1, pp. 4-21, Jan. 2017.
+doi: 10.1109/JBHI.2016.2636665
+keywords: {Machine learning;Informatics;Training;Biomedical imaging;Neurons;Artificial neural networks;Biological neural networks;Bioinformatics;deep learning;health informatics;machine learning;medical imaging;public health;wearable devices},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7801947&isnumber=7839252
+
+B. Xue, M. Zhang, W. N. Browne and X. Yao, "A Survey on Evolutionary Computation Approaches to Feature Selection," in IEEE Transactions on Evolutionary Computation, vol. 20, no. 4, pp. 606-626, Aug. 2016.
+doi: 10.1109/TEVC.2015.2504420
+keywords: {Search problems;Machine learning algorithms;Evolutionary computation;Optimization;Data mining;Feature extraction;Computational efficiency;Classification;data mining;evolutionary computation;feature selection;machine learning},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7339682&isnumber=7524657
+
+Z. Zhang, Y. Xu, J. Yang, X. Li and D. Zhang, "A Survey of Sparse Representation: Algorithms and Applications," in IEEE Access, vol. 3, pp. 490-530, 2015.
+doi: 10.1109/ACCESS.2015.2430359
+keywords: {Sparse matrices;Algorithm design and analysis;Signal processing algorithms;Approximation algorithms;Approximation methods;Signal processing;Sparse representation;compressive sensing;greedy algorithm;constrained optimization;proximal algorithm;homotopy algorithm;dictionary learning;Sparse representation;compressive sensing;greedy algorithm;constrained optimization;proximal algorithm;homotopy algorithm;dictionary learning},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7102696&isnumber=7042252
+
+H. Hu, Y. Wen, T. -S. Chua and X. Li, "Toward Scalable Systems for Big Data Analytics: A Technology Tutorial," in IEEE Access, vol. 2, pp. 652-687, 2014.
+doi: 10.1109/ACCESS.2014.2332453
+keywords: {Big data;Information analysis;Scalability;Data acquisition;Medical services;Supply chain management;Sensor phenomena and characterization;Sensor systems;Real-time systems;Big data analytics;cloud computing;data acquisition;data storage;data analytics;Hadoop},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6842585&isnumber=6705689
+
+N. D. Sidiropoulos, L. De Lathauwer, X. Fu, K. Huang, E. E. Papalexakis and C. Faloutsos, "Tensor Decomposition for Signal Processing and Machine Learning," in IEEE Transactions on Signal Processing, vol. 65, no. 13, pp. 3551-3582, 1 July1, 2017.
+doi: 10.1109/TSP.2017.2690524
+keywords: {Tensile stress;Signal processing algorithms;Matrix decomposition;Signal processing;Optimization;Tutorials;Tensor decomposition;tensor factorization;rank;canonical polyadic decomposition (CPD);parallel factor analysis (PARAFAC);Tucker model;higher-order singular value decomposition (HOSVD);multilinear singular value decomposition (MLSVD);uniqueness;NP-hard problems;alternating optimization;alternating direction method of multipliers;gradient descent;Gauss–Newton;stochastic gradient;Cramér–Rao bound;communications;source separation;harmonic retrieval;speech separation;collaborative filtering;mixture modeling;topic modeling;classification;subspace learning},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7891546&isnumber=7912413
+
+A. Fahad et al., "A Survey of Clustering Algorithms for Big Data: Taxonomy and Empirical Analysis," in IEEE Transactions on Emerging Topics in Computing, vol. 2, no. 3, pp. 267-279, Sept. 2014.
+doi: 10.1109/TETC.2014.2330519
+keywords: {Clustering algorithms;Algorithm design and analysis;Partitioning algorithms;Big data;Clustering methods;Neural networks;Taxonomies;Clustering algorithms;unsupervised learning;big data},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6832486&isnumber=6939750
