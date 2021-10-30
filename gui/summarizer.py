@@ -10,25 +10,47 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 
 from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
-
-import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 import en_core_web_sm
 import nltk
 import numpy as np
+import pandas as pd
 import time
 
+weights = {
+    "1": 1,
+    "2": 0.1,
+    "3": 0.5,
+    "4": 0.25,
+    "else": 0.0
+}
 
-def _calculateFullScores(sentenceScores, namedEntityScores):
+
+def _calculateFullScores(sentenceScores, namedEntityScores, counts):
     scaler = MinMaxScaler()
+    weightList= []
+    sentenceIndex = 0
+
+    if counts[2] == 0:
+        counts.pop[2]
+
+    for i in range(len(counts)):
+        for j in range(counts[i]):
+            if i > 3:
+                weightList.append(weights["else"])
+            else:
+                weightList.append(weights[str(i+1)])
+
     df = pd.DataFrame({
+        "Weights": weightList,
         "SentenceScores": sentenceScores,
-        "EntityScores": namedEntityScores
+        "EntityScores": namedEntityScores,
     })
+
     df[["SentencesScaled"]] = scaler.fit_transform(df[["SentenceScores"]])
     df[["EntitiesScaled"]] = scaler.fit_transform(df[["EntityScores"]])
-    df["S_weight"] = df["SentencesScaled"] + 2 * df["EntitiesScaled"]
+    df["S_weight"] = df["SentencesScaled"] + (2 * df["EntitiesScaled"]) + df["Weights"]
 
     return df["S_weight"].tolist()
 
@@ -40,7 +62,8 @@ def _convertHtmlToStr(elements):
             str += element.text
             if not str.endswith("."):
                 str += ". "
-    return str
+    sentences = sent_tokenize(str)
+    return str, len(sentences)
 
 
 def _getNamedEntities(article):
@@ -54,6 +77,12 @@ def _getNamedEntities(article):
 
     return namedEntities
 
+
+def _getSentencesWithMaxWeights(weights, sentences):
+    arr = np.array(weights)
+    indexes = np.argpartition(arr, -10)[-10:]
+    sentences = np.array(sentences)
+    return sentences[indexes]
 
 
 def _preProcess(document):
@@ -84,24 +113,33 @@ def _scrapeArticle(url):
     time.sleep(3)
 
     soup = BeautifulSoup(driver.page_source, 'lxml')
+    strElement = ""
+    countTitle, countAbstract, countH2, countH3, countH4, countP = 0, 0, 0, 0, 0, 0
 
-    article += soup.find("h1", {"class": "document-title"}).text
+    strElement, countTitle = _convertHtmlToStr(soup.find("h1", {"class": "document-title"}))
+    article += strElement
     article += ". "
-    article +=  soup.find("div", {"class": "abstract-text"}).text
-    article += " "
+    strElement, countAbstract = _convertHtmlToStr(soup.find("div", {"class": "abstract-text"}))
+    article += strElement
 
     articleHtmlBody = soup.find("div", {"id": "article"})
     if articleHtmlBody == None:
         raise ValueError
 
-    article += _convertHtmlToStr(articleHtmlBody.find_all("h2"))
-    article += _convertHtmlToStr(articleHtmlBody.find_all("h3"))
-    article += _convertHtmlToStr(articleHtmlBody.find_all("h4"))
-    article += _convertHtmlToStr(articleHtmlBody.find_all("p"))
+    strElement, countH2 = _convertHtmlToStr(articleHtmlBody.find_all("h2"))
+    article += strElement
+    strElement, countH3 = _convertHtmlToStr(articleHtmlBody.find_all("h3"))
+    article += strElement
+    strElement, countH4 = _convertHtmlToStr(articleHtmlBody.find_all("h4"))
+    article += strElement
+    strElement, countP = _convertHtmlToStr(articleHtmlBody.find_all("p"))
+    article += strElement
     
     driver.close()
 
-    return article
+    counts = [countTitle, countAbstract, countH2, countH3, countH4, countP]
+
+    return article, counts
 
 
 def _tfidfScores(corpus, sentences):
@@ -122,11 +160,12 @@ def _tfidfScores(corpus, sentences):
 def calculateSWeigth(documentType, path):
     article = ""
     if documentType == "url":
-        article = _scrapeArticle(path)
+        article, counts = _scrapeArticle(path)
 
     sentences, tokens = _preProcess(article)
     sentenceTfidfScores = _tfidfScores(tokens, sentences)
     namedEntitiesTfidfScores = _tfidfScores(_getNamedEntities(article), sentences)
-    SWeight = _calculateFullScores(sentenceTfidfScores, namedEntitiesTfidfScores)
-    print(SWeight)
+    SWeight = _calculateFullScores(sentenceTfidfScores, namedEntitiesTfidfScores, counts)
+    topSentences = _getSentencesWithMaxWeights(SWeight, sent_tokenize(article))
+    return topSentences
 

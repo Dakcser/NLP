@@ -1,5 +1,6 @@
 import sys
 import summarizer
+import pandas as pd
 from PySide2.QtCore import Qt, Slot
 from PySide2.QtWidgets import (QAction, QApplication, QHeaderView, QHBoxLayout,
                                QLabel, QLineEdit, QMainWindow, QPushButton,
@@ -13,13 +14,15 @@ class Widget(QWidget):
 
         # Store input document
         self.document = None
+        self.task3Sentences = []
+        self.dataframe = None
 
         ################### UI Elements ####################
         self.file_name = QLineEdit()
         self.load = QPushButton("Load document")
         self.load.setStyleSheet("background-color:#eb8c34;")
 
-        table = QTableWidget()
+        self.table = QTableWidget()
 
         quit = QPushButton("Quit")
         quit.setStyleSheet("background-color:#eb8c34;")
@@ -56,7 +59,7 @@ class Widget(QWidget):
         # Main layout
         layout = QVBoxLayout()
         layout.addLayout(loadview)
-        layout.addWidget(table)
+        layout.addWidget(self.table)
         layout.addWidget(quit)
 
 
@@ -68,6 +71,7 @@ class Widget(QWidget):
         self.file_name.textChanged[str].connect(self.check_disable)
         self.load.clicked.connect(self.load_document)
 
+
     @Slot()
     def check_disable(self, s):
         """
@@ -78,6 +82,7 @@ class Widget(QWidget):
         else:
             self.load.setEnabled(True)
 
+
     @Slot()
     def load_document(self):
         """
@@ -85,10 +90,10 @@ class Widget(QWidget):
         """
         try:
             document = None
+            sentences = []
             # Document location is given by url
             if self.url.isChecked():
-                summarizer.calculateSWeigth("url", self.file_name.text())
-                pass
+                sentences = summarizer.calculateSWeigth("url", self.file_name.text())
             # Document is stored locally
             else:
                 ftype = self.file_name.text().split('.')[-1]
@@ -98,10 +103,30 @@ class Widget(QWidget):
                     raise FileNotFoundError("File must be html or txt document")
             
             self.document = document
-        except FileNotFoundError:
+            self.dataframe = pd.DataFrame(data=sentences)
+            self.update_table()
+        except (FileNotFoundError, ValueError):
             self.dialog = FileNotFoundWindow()
             self.dialog.show()
+
+
+    def update_table(self):
+        """
+        Updates main screen table consisting pandas dataframe of data
+        """
+        head = self.dataframe.head(10)
+        headers = list(head)
+        self.table.setRowCount(head.shape[0])
+        self.table.setColumnCount(head.shape[1])
+        self.table.setHorizontalHeaderLabels(headers)
+        self.table.setVerticalHeaderLabels(head.index)
+
+        head_array = head.values
+        for row in range(head.shape[0]):
+            for col in range(head.shape[1]):
+                self.table.setItem(row, col, QTableWidgetItem(str(head_array[row,col])))
  
+
     @Slot()
     def quit_application(self):
         """
