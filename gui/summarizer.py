@@ -8,15 +8,28 @@ from nltk.stem import WordNetLemmatizer
 from nltk.stem.snowball import SnowballStemmer
 from nltk.tokenize import sent_tokenize, word_tokenize
 
-from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import MinMaxScaler
+
+# Sumy import
+from sumy.parsers.html import HtmlParser
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lsa import LsaSummarizer as LSASummarizer
+from sumy.summarizers.lex_rank import LexRankSummarizer as LexRankSummarizer
+from sumy.summarizers.luhn import LuhnSummarizer as LuhnSummarizer
+from sumy.nlp.stemmers import Stemmer
+from sumy.utils import get_stop_words
+
 
 import en_core_web_sm
 import nltk
 import numpy as np
 import pandas as pd
 import time
+
+LANGUAGE = "english"
+SENTENCES_COUNT = 10
 
 weights = {
     "1": 1,
@@ -30,7 +43,6 @@ weights = {
 def _calculateFullScores(sentenceScores, namedEntityScores, counts):
     scaler = MinMaxScaler()
     weightList= []
-    sentenceIndex = 0
 
     if counts[2] == 0:
         counts.pop[2]
@@ -78,15 +90,57 @@ def _getNamedEntities(article):
     return namedEntities
 
 
+def _getLexRankSentences(article):
+    parser = PlaintextParser.from_string(article, Tokenizer(LANGUAGE))
+    stemmer = Stemmer(LANGUAGE)
+
+    summarizer = LexRankSummarizer(stemmer)
+    summarizer.stop_words = get_stop_words(LANGUAGE)
+    sentences = []
+
+    for sentence in summarizer(parser.document, SENTENCES_COUNT):
+        sentences.append(sentence)
+    
+    return sentences
+
+
+def _getLSASentences(article):
+    parser = PlaintextParser.from_string(article, Tokenizer(LANGUAGE))
+    stemmer = Stemmer(LANGUAGE)
+
+    summarizer = LSASummarizer(stemmer)
+    summarizer.stop_words = get_stop_words(LANGUAGE)
+    sentences = []
+
+    for sentence in summarizer(parser.document, SENTENCES_COUNT):
+        sentences.append(sentence)
+    
+    return sentences
+
+
+def _getLuhnSentences(article):
+    parser = PlaintextParser.from_string(article, Tokenizer(LANGUAGE))
+    stemmer = Stemmer(LANGUAGE)
+
+    summarizer = LuhnSummarizer(stemmer)
+    summarizer.stop_words = get_stop_words(LANGUAGE)
+    sentences = []
+
+    for sentence in summarizer(parser.document, SENTENCES_COUNT):
+        sentences.append(sentence)
+    
+    return sentences
+
+
 def _getSentencesWithMaxWeights(weights, sentences):
     arr = np.array(weights)
-    indexes = np.argpartition(arr, -10)[-10:]
+    indexes = np.argpartition(arr, -SENTENCES_COUNT)[-SENTENCES_COUNT:]
     sentences = np.array(sentences)
     return sentences[indexes]
 
 
 def _preProcess(document):
-    stopwords = list(set(nltk.corpus.stopwords.words('english')))
+    stopwords = list(set(nltk.corpus.stopwords.words(LANGUAGE)))
     WN_lemmatizer = WordNetLemmatizer()
     sentences = sent_tokenize(document)
     processedSentences = []
@@ -138,7 +192,6 @@ def _scrapeArticle(url):
     driver.close()
 
     counts = [countTitle, countAbstract, countH2, countH3, countH4, countP]
-
     return article, counts
 
 
@@ -157,7 +210,7 @@ def _tfidfScores(corpus, sentences):
     return scores
 
 
-def calculateSWeigth(documentType, path):
+def calculateTopSentences(documentType, path):
     article = ""
     if documentType == "url":
         article, counts = _scrapeArticle(path)
@@ -166,6 +219,9 @@ def calculateSWeigth(documentType, path):
     sentenceTfidfScores = _tfidfScores(tokens, sentences)
     namedEntitiesTfidfScores = _tfidfScores(_getNamedEntities(article), sentences)
     SWeight = _calculateFullScores(sentenceTfidfScores, namedEntitiesTfidfScores, counts)
-    topSentences = _getSentencesWithMaxWeights(SWeight, sent_tokenize(article))
-    return topSentences
+    sWeightSentences = _getSentencesWithMaxWeights(SWeight, sent_tokenize(article))
+    LexRankSentences = _getLexRankSentences(article)
+    LuhnSentences = _getLuhnSentences(article)
+    LSASentences = _getLSASentences(article)
 
+    return sWeightSentences, LexRankSentences, LuhnSentences, LSASentences

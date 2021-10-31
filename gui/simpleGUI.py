@@ -90,10 +90,13 @@ class Widget(QWidget):
         """
         try:
             document = None
-            sentences = []
+            sWeightSentences = []
+            sumySentences = []
             # Document location is given by url
             if self.url.isChecked():
-                sentences = summarizer.calculateSWeigth("url", self.file_name.text())
+                sWeightSentences, LexRankSentences, LuhnSentences, LSASentences = summarizer.calculateTopSentences("url",
+                                                                                   self.file_name.text())
+
             # Document is stored locally
             else:
                 ftype = self.file_name.text().split('.')[-1]
@@ -103,9 +106,14 @@ class Widget(QWidget):
                     raise FileNotFoundError("File must be html or txt document")
             
             self.document = document
+            sentences = {"Sweight": sWeightSentences,
+                         "Lex Rank": LexRankSentences,
+                         "Luhn": LuhnSentences,
+                         "LSA": LSASentences}
             self.dataframe = pd.DataFrame(data=sentences)
             self.update_table()
-        except (FileNotFoundError, ValueError):
+        except (FileNotFoundError, ValueError) as e:
+            print(e)
             self.dialog = FileNotFoundWindow()
             self.dialog.show()
 
