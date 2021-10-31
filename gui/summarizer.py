@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import os
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from spacy import displacy
@@ -44,8 +45,11 @@ def _calculateFullScores(sentenceScores, namedEntityScores, counts):
     scaler = MinMaxScaler()
     weightList= []
 
-    if counts[2] == 0:
-        counts.pop[2]
+    if len(counts) > 0:
+        if counts[2] == 0:
+            counts.pop[2]
+    else:
+        counts = [0, 0, 0, 0, len(sentenceScores)]
 
     for i in range(len(counts)):
         for j in range(counts[i]):
@@ -212,8 +216,14 @@ def _tfidfScores(corpus, sentences):
 
 def calculateTopSentences(documentType, path):
     article = ""
+    counts = []
     if documentType == "url":
         article, counts = _scrapeArticle(path)
+    else:
+        with open(path) as f:
+            article = f.readlines()
+        f.close()
+        article = " ".join(article)
 
     sentences, tokens = _preProcess(article)
     sentenceTfidfScores = _tfidfScores(tokens, sentences)

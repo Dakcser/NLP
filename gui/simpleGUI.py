@@ -33,7 +33,7 @@ class Widget(QWidget):
         # Load file VBox
         loadfile = QVBoxLayout()
         loadfile.setMargin(10)
-        loadfile.addWidget(QLabel("Document location (URL or file path)"))
+        loadfile.addWidget(QLabel("Document location (URL or file path). Give local files in txt form"))
         loadfile.addWidget(self.file_name)
         loadfile.addWidget(self.load)
 
@@ -91,19 +91,19 @@ class Widget(QWidget):
         try:
             document = None
             sWeightSentences = []
-            sumySentences = []
             # Document location is given by url
             if self.url.isChecked():
                 sWeightSentences, LexRankSentences, LuhnSentences, LSASentences = summarizer.calculateTopSentences("url",
-                                                                                   self.file_name.text())
+                                                                                                                   self.file_name.text())
 
             # Document is stored locally
             else:
                 ftype = self.file_name.text().split('.')[-1]
-                if ftype == 'html' or ftype == 'txt':
-                    pass
+                if ftype == 'txt':
+                    sWeightSentences, LexRankSentences, LuhnSentences, LSASentences = summarizer.calculateTopSentences("local",
+                                                                                                                       self.file_name.text())
                 else:
-                    raise FileNotFoundError("File must be html or txt document")
+                    raise FileNotFoundError("File must be txt document")
             
             self.document = document
             sentences = {"Sweight": sWeightSentences,
