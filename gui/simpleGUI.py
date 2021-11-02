@@ -2,11 +2,10 @@ import sys
 import summarizer
 import pandas as pd
 from PySide2.QtCore import Qt, Slot
-from PySide2.QtWidgets import (QAction, QApplication, QHeaderView, QHBoxLayout,
+from PySide2.QtWidgets import (QAction, QApplication, QHBoxLayout,
                                QLabel, QLineEdit, QMainWindow, QPushButton,
-                               QTableWidget, QTableWidgetItem, QDoubleSpinBox,
-                               QVBoxLayout, QWidget, QGroupBox, QCheckBox,
-                               QSpinBox, QFormLayout, QRadioButton)
+                               QTableWidget, QTableWidgetItem, QVBoxLayout,
+                               QWidget, QGroupBox, QRadioButton)
 
 class Widget(QWidget):
     def __init__(self):
@@ -103,7 +102,7 @@ class Widget(QWidget):
                     sWeightSentences, LexRankSentences, LuhnSentences, LSASentences = summarizer.calculateTopSentences("local",
                                                                                                                        self.file_name.text())
                 else:
-                    raise FileNotFoundError("File must be txt document")
+                    raise DocumentNotFoundWindow("File must be txt document")
             
             self.document = document
             sentences = {"Sweight": sWeightSentences,
@@ -114,7 +113,7 @@ class Widget(QWidget):
             self.update_table()
         except (FileNotFoundError, ValueError) as e:
             print(e)
-            self.dialog = FileNotFoundWindow()
+            self.dialog = DocumentNotFoundWindow()
             self.dialog.show()
 
 
@@ -165,15 +164,15 @@ class MainWindow(QMainWindow):
         QApplication.quit()
 
 
-class FileNotFoundWindow(QMainWindow):
+class DocumentNotFoundWindow(QMainWindow):
     def __init__(self, parent=None):
-        super(FileNotFoundWindow, self).__init__(parent)
+        super(DocumentNotFoundWindow, self).__init__(parent)
         self.setWindowTitle("Error")
 
         # Display error message
         self.message = QLabel(self)
         self.message.setAlignment(Qt.AlignVCenter | Qt.AlignHCenter)
-        self.message.setText("File not found or it is in wrong format!\nSupported types are .html and .txt.\nIf file is in the same folder with this code just type the file name.\nFor example file.html.")
+        self.message.setText("Document not found or it is in wrong format!\nSupported file type is .txt.\nIf file is in the same folder with this code just type the file name.\nFor example file.txt.\nIn case you used url, make sure it does not contain any erros.")
 
         # Push button for closing window
         self.ok = QPushButton("Ok")

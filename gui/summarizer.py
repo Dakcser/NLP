@@ -77,7 +77,9 @@ def _convertHtmlToStr(elements):
         if len(element.text.split()) > 1:
             str += element.text
             if not str.endswith("."):
-                str += ". "
+                str += "."
+            # There is no space after paragraph
+            str += " "
     sentences = sent_tokenize(str)
     return str, len(sentences)
 
@@ -195,7 +197,8 @@ def _scrapeArticle(url):
     
     driver.close()
 
-    counts = [countTitle, countAbstract, countH2, countH3, countH4, countP]
+    # CountP is +1 after processing
+    counts = [countTitle, countAbstract, countH2, countH3, countH4, countP+1]
     return article, counts
 
 
