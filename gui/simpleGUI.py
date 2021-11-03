@@ -32,7 +32,7 @@ class Widget(QWidget):
         # Load file VBox
         loadfile = QVBoxLayout()
         loadfile.setMargin(10)
-        loadfile.addWidget(QLabel("Document location (URL or file path). Give local files in txt form"))
+        loadfile.addWidget(QLabel("Document location (URL or file path). Give local files in .txt form.(Please use only IEEExplore urls eg. https://ieeexplore.ieee.org/document/6809191)"))
         loadfile.addWidget(self.file_name)
         loadfile.addWidget(self.load)
 
@@ -202,7 +202,7 @@ if __name__ == "__main__":
     widget = Widget()
     # QMainWindow using QWidget as central widget
     window = MainWindow(widget)
-    window.resize(1000, 800)
+    window.resize(1200, 800)
     window.show()
 
     # Execute application
