@@ -1,7 +1,7 @@
 # NLP
 natural language processing &amp; text mining project
 
-Task outputs and code can be found in jupyter notebook.
+**Task outputs and code can be found in jupyter notebook.**
 
 
 
