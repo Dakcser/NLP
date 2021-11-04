@@ -1,6 +1,10 @@
 # NLP
 natural language processing &amp; text mining project
 
+Task outputs and code can be found in jupyter notebook.
+
+
+
 Project 21: Automatic Summarization  
 
 1)We shall consider structured document containing a title, abstract and a set of subsections. We would like to build a text summarizer such that tracks important keywords in the document. For this purpose, the first step is identify these keywords.  
